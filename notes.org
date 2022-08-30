@@ -1,0 +1,63 @@
+These are the commands I used:
+
+Commadn to help setup 'sqlite' with better default headers:
+#+begin_src sql
+sqlite> .headers on
+sqlite> .mode column
+sqlite> .width auto
+#+end_src
+
+Command to obtain the cats that belong to a specific owner:
+#+begin_src sql
+SELECT * FROM cats WHERE owner_id = 2;
+#+end_src
+
+Here are the two types of 'JOINS':
+- INNER JOIN:	Returns all rows when there is at least one match in BOTH tables
+- LEFT (OUTER) JOIN: Returns all rows from the left table, and the matched rows from the right table
+
+Example of 'INNER JOIN' which uses 'table_name.column_name' syntax:
+#+begin_src sql
+SELECT cats.name, cats.breed, owners.name
+FROM cats
+INNER JOIN owners
+ON cats.owner_id = owners.id;
+
+name  breed          name
+----  -------------  --------
+Maru  Scottish Fold  mugumogu
+Hana  Tabby          mugumogu
+Nona  Tortoiseshell  Sophie
+#+end_src
+
+Modified query using 'AS' keyword to rename the merged table's column accordinglY:
+#+begin_src sql
+SELECT
+cats.name,
+cats.breed,
+owners.name AS "owner_name"
+FROM cats
+INNER JOIN owners
+ON cats.owner_id = owners.id;
+
+name  breed          owner_name
+----  -------------  ----------
+Maru  Scottish Fold  mugumogu
+Hana  Tabby          mugumogu
+Nona  Tortoiseshell  Sophie
+#+end_src
+
+Example of a 'Left Join', which will ALSO return the "Lil' Bub" cat which doesn't even have an 'owner_id' value since it will return the match between both tables as well as the rest of the results from the left table (aka 'cats')
+#+begin_src sql
+SELECT cats.name, cats.breed, owners.name
+FROM cats
+LEFT OUTER JOIN owners
+ON cats.owner_id = owners.id;
+
+name      breed          name
+--------  -------------  --------
+Maru      Scottish Fold  mugumogu
+Hana      Tabby          mugumogu
+Nona      Tortoiseshell  Sophie
+Lil' Bub  perma-kitten
+#+end_src
